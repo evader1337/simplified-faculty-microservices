@@ -31,7 +31,7 @@ public class SubjectResource {
     @Path("{id}")
     @GET
     public Response getSubject(@PathParam("id") Integer id) {
-        Subject subject = subjectBean.getSubject(id);
+        Subject subject = subjectBean.getSubject(id, true);
         if(subject != null) {
             return Response.status(Response.Status.OK).entity(subject).build();
         } else {
@@ -41,7 +41,11 @@ public class SubjectResource {
 
     @POST
     public Response addSubject(Subject subject) {
-        return Response.status(Response.Status.CREATED).entity(subjectBean.addSubject(subject)).build();
+        Subject s = subjectBean.addSubject(subject);
+        if(s != null) {
+            return Response.status(Response.Status.CREATED).entity(s).build();
+        }
+        return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
     @Path("{id}")

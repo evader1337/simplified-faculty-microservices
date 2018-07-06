@@ -66,7 +66,7 @@ public class StudentResource {
         }
     }
 
-    @Path("{id}/users")
+    @Path("{id}/subjects")
     @POST
     public Response addSubject(@PathParam("id") Integer id, Subject subject) {
         Student student = studentBean.addSubject(id, subject);
@@ -77,7 +77,7 @@ public class StudentResource {
         }
     }
 
-    @Path("{id}/users/{sid}")
+    @Path("{id}/subjects/{sid}")
     @DELETE
     public Response deleteSubject(@PathParam("id") Integer id, @PathParam("sid") Integer subject) {
         Student student = studentBean.removeSubject(id, subject);

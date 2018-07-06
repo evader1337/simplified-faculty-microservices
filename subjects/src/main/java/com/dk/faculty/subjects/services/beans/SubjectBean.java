@@ -11,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
@@ -33,11 +34,23 @@ public class SubjectBean {
     }
 
     public List<Subject> getSubjects() {
-        return em.createQuery("Select s from Subject s").getResultList();
+        List<Subject> subjects = em.createQuery("Select s from Subject s").getResultList();
+        for(Subject s: subjects) {
+            s.setStudents(httpClient
+                    .target(baseUrlUsers).path("student-subjects").path("{id}").resolveTemplate("id", s.getID())
+                    .request().get(new GenericType<List<Integer>>() {}));
+        }
+        return subjects;
     }
 
-    public Subject getSubject(Integer id) {
-        return em.find(Subject.class, id);
+    public Subject getSubject(Integer id, boolean withStudents) {
+        Subject s =  em.find(Subject.class, id);
+        if(s != null && withStudents) {
+            s.setStudents(httpClient
+                    .target(baseUrlUsers).path("student-subjects").path("{id}").resolveTemplate("id", s.getID())
+                    .request().get(new GenericType<List<Integer>>() {}));
+        }
+        return s;
     }
 
     public boolean checkForPlacesAndUsers(Subject s) {
@@ -73,7 +86,7 @@ public class SubjectBean {
 
     @Transactional
     public boolean deleteSubject(Integer id) {
-        Subject s = getSubject(id);
+        Subject s = getSubject(id, false);
         if(s != null) {
             em.remove(s);
             return true;
@@ -84,7 +97,7 @@ public class SubjectBean {
     @Transactional
     public Subject updateSubject(Integer id, Subject subject) {
         if(!checkForPlacesAndUsers(subject)) return null;
-        Subject s = getSubject(id);
+        Subject s = getSubject(id, false);
         subject.setID(s.getID());
         em.merge(subject);
         return subject;

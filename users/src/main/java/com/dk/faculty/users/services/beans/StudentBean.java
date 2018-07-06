@@ -53,7 +53,6 @@ public class StudentBean {
     }
 
     public List<Integer> getStudentSubjects(Integer subjectId) {
-        if(!checkForSubject(subjectId)) return null;
         List<Student> students = getStudents();
         List<Integer> subjectStudents = new ArrayList<Integer>();
         for(Student s: students) {
