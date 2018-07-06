@@ -4,6 +4,7 @@ import com.dk.faculty.graphqlaggregator.beans.PlaceBean;
 import com.dk.faculty.graphqlaggregator.entities.Place;
 import com.kumuluz.ee.graphql.annotations.GraphQLClass;
 import io.leangen.graphql.annotations.GraphQLArgument;
+import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLNonNull;
 import io.leangen.graphql.annotations.GraphQLQuery;
 
@@ -26,5 +27,11 @@ public class PlaceResolvers {
     @GraphQLQuery
     public Place getPlace(@GraphQLArgument(name = "id") @GraphQLNonNull Integer id) {
         return placeBean.getPlace(id);
+    }
+
+    // mutations
+    @GraphQLMutation
+    public Place addPlace(@GraphQLArgument(name="place") @GraphQLNonNull Place place) {
+        return placeBean.addPlace(place);
     }
 }

@@ -10,6 +10,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -37,7 +38,7 @@ public class PlaceBean {
         if (r.getStatusInfo().getStatusCode() == Response.Status.OK.getStatusCode()) {
             return r.readEntity(new GenericType<List<Place>>(){});
         } else {
-            Error e = r.readEntity(new GenericType<Error>(){});
+            Error e = r.readEntity(Error.class);
             throw new GraphQLException(e.getDescription() + " " + e.getLocation());
         }
     }
@@ -51,9 +52,23 @@ public class PlaceBean {
                 .request()
                 .get();
         if(r.getStatusInfo().getStatusCode() == Response.Status.OK.getStatusCode()) {
-            return r.readEntity(new GenericType<Place>(){});
+            return r.readEntity(Place.class);
         } else {
-            Error e = r.readEntity(new GenericType<Error>(){});
+            Error e = r.readEntity(Error.class);
+            throw new GraphQLException(e.getDescription() + " " + e.getLocation());
+        }
+    }
+
+    public Place addPlace(Place place) {
+        Response r = httpClient
+                .target(baseUrlPlaces)
+                .path("places")
+                .request()
+                .post(Entity.json(place));
+        if(r.getStatusInfo().getStatusCode() == Response.Status.CREATED.getStatusCode()) {
+            return r.readEntity(Place.class);
+        } else {
+            Error e = r.readEntity(Error.class);
             throw new GraphQLException(e.getDescription() + " " + e.getLocation());
         }
     }

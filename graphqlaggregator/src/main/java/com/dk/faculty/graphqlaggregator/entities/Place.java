@@ -1,5 +1,7 @@
 package com.dk.faculty.graphqlaggregator.entities;
 
+import io.leangen.graphql.annotations.GraphQLIgnore;
+
 public class Place {
     private Integer id;
     private String location;
@@ -9,6 +11,7 @@ public class Place {
         return id;
     }
 
+    @GraphQLIgnore
     public void setId(Integer id) {
         this.id = id;
     }
