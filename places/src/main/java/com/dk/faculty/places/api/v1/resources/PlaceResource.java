@@ -23,9 +23,8 @@ public class PlaceResource {
         List<Place> places = placeBean.getPlaces();
         if(places != null) {
             return Response.status(Response.Status.OK).entity(places).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
         }
+        throw new RuntimeException("Failed getting places.");
     }
 
     @Path("{id}")
@@ -34,14 +33,17 @@ public class PlaceResource {
         Place place = placeBean.getPlace(id);
         if(place != null) {
             return Response.status(Response.Status.OK).entity(place).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
         }
+        throw new NotFoundException("Place with id " + id + " not found in database.");
     }
 
     @POST
     public Response addPlace(Place place) {
-        return Response.status(Response.Status.CREATED).entity(placeBean.addPlace(place)).build();
+        Place p = placeBean.addPlace(place);
+        if(p != null) {
+            return Response.status(Response.Status.CREATED).entity(p).build();
+        }
+        throw new BadRequestException("Provided invalid fields. Please check your input.");
     }
 
     @Path("{id}")
@@ -49,9 +51,8 @@ public class PlaceResource {
     public Response deletePlace(@PathParam("id") Integer id) {
         if(placeBean.deletePlace(id)) {
             return Response.status(Response.Status.NO_CONTENT).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
         }
+        throw new NotFoundException("Place with id " + id + " not found in database.");
     }
 
     @Path("{id}")
@@ -60,8 +61,7 @@ public class PlaceResource {
         Place p = placeBean.updatePlace(id, place);
         if(p != null) {
             return Response.status(Response.Status.OK).entity(p).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
         }
+        throw new NotFoundException("Place with id " + id + " not found in database.");
     }
 }
