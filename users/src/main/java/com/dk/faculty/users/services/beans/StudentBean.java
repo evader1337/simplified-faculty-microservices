@@ -21,7 +21,7 @@ public class StudentBean {
     @PersistenceContext(unitName = "users-jpa")
     private EntityManager em;
     private Client httpClient;
-    private String baseUrl;
+    private String baseUrlSubjects;
 
     @Inject
     DiscoveryUtil discoveryUtil;
@@ -29,8 +29,19 @@ public class StudentBean {
     @PostConstruct
     private void init() {
         httpClient = ClientBuilder.newClient();
-        String address = discoveryUtil.getServiceInstance("subjects", "1.0.0", "dev").get().toString();
-        baseUrl = address + "/v1";
+        baseUrlSubjects = discoveryUtil.getServiceInstance("subjects", "1.0.0", "dev").get().toString() + "/v1";
+    }
+
+    public boolean checkForSubject(Integer subjectId) {
+        if(subjectId != null) {
+            Response r =  httpClient
+                    .target(baseUrlSubjects).path("subjects").path("{id}").resolveTemplate("id", subjectId)
+                    .request().get();
+            if(r.getStatusInfo().getStatusCode() == 404) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public List<Student> getStudents() {
@@ -42,14 +53,7 @@ public class StudentBean {
     }
 
     public List<Integer> getStudentSubjects(Integer subjectId) {
-        if(subjectId != null) {
-            Response r =  httpClient
-                    .target(baseUrl).path("places").path("{id}").resolveTemplate("id", subjectId)
-                    .request().get();
-            if(r.getStatusInfo().getStatusCode() == 404) {
-                return null;
-            }
-        }
+        if(!checkForSubject(subjectId)) return null;
         List<Student> students = getStudents();
         List<Integer> subjectStudents = new ArrayList<Integer>();
         for(Student s: students) {
@@ -90,6 +94,7 @@ public class StudentBean {
 
     @Transactional
     public Student addSubject(Integer id, Subject subject) {
+        if(!checkForSubject(subject.getSubjectId())) return null;
         Student s = getStudent(id);
         if(s != null) {
             s.addSubject(subject.getSubjectId());
