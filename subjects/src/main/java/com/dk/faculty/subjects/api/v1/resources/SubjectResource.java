@@ -23,9 +23,8 @@ public class SubjectResource {
         List<Subject> students = subjectBean.getSubjects();
         if(students != null) {
             return Response.status(Response.Status.OK).entity(students).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
         }
+        throw new RuntimeException("Failed getting subjects.");
     }
 
     @Path("{id}")
@@ -34,9 +33,8 @@ public class SubjectResource {
         Subject subject = subjectBean.getSubject(id, true);
         if(subject != null) {
             return Response.status(Response.Status.OK).entity(subject).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
         }
+        throw new NotFoundException("Subject with id " + id + " not found in database.");
     }
 
     @POST
@@ -45,7 +43,7 @@ public class SubjectResource {
         if(s != null) {
             return Response.status(Response.Status.CREATED).entity(s).build();
         }
-        return Response.status(Response.Status.BAD_REQUEST).build();
+        throw new BadRequestException("Provided invalid fields. Please check your input.");
     }
 
     @Path("{id}")
@@ -53,9 +51,8 @@ public class SubjectResource {
     public Response deleteSubject(@PathParam("id") Integer id) {
         if(subjectBean.deleteSubject(id)) {
             return Response.status(Response.Status.NO_CONTENT).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
         }
+        throw new NotFoundException("Subject with id " + id + " not found in database.");
     }
 
     @Path("{id}")
@@ -64,8 +61,7 @@ public class SubjectResource {
         Subject s = subjectBean.updateSubject(id, subject);
         if(s != null) {
             return Response.status(Response.Status.OK).entity(s).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
         }
+        throw new NotFoundException("Subject with id " + id + " not found in database.");
     }
 }
