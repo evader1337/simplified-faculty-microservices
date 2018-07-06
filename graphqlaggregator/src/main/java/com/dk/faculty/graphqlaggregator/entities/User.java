@@ -1,14 +1,7 @@
-package com.dk.faculty.users.entities;
+package com.dk.faculty.graphqlaggregator.entities;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
 
-@MappedSuperclass
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String firstName;
     private String lastName;
@@ -17,8 +10,8 @@ public class User {
         return id;
     }
 
-    public void setId(Integer ID) {
-        this.id = ID;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getFirstName() {

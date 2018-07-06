@@ -1,0 +1,14 @@
+kumuluzee:
+  name: graphqlapi
+  version: 1.0.0
+  server:
+    graphql:
+      mapping: graphql
+    base-url: http://192.168.99.100:8080
+    http:
+      port: 8080
+  discovery:
+    etcd:
+      hosts: http://192.168.99.100:2379
+    ttl: 30
+    ping-interval: 5

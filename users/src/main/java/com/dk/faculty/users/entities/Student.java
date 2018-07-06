@@ -8,30 +8,30 @@ import java.util.List;
 public class Student extends User {
 
     @ElementCollection
-    private List<Integer> subjects;
+    private List<Integer> subjectIds;
 
-    public List<Integer> getSubjects() {
-        return subjects;
+    public List<Integer> getSubjectIds() {
+        return subjectIds;
     }
 
-    public void setSubjects(List<Integer> subjects) {
-        this.subjects = subjects;
+    public void setSubjectIds(List<Integer> subjects) {
+        this.subjectIds = subjects;
     }
 
     public void addSubject(Integer subject) {
-        if (!subjects.contains(subject)) {
-            subjects.add(subject);
+        if (!subjectIds.contains(subject)) {
+            subjectIds.add(subject);
         }
     }
 
     public boolean hasSubject(Integer subject) {
-        return subjects.contains(subject);
+        return subjectIds.contains(subject);
     }
 
     public void removeSubject(Integer subject) {
-        for(int i = 0; i<subjects.size();i++) {
-            if(subjects.get(i) == subject) {
-                subjects.remove(i);
+        for(int i = 0; i< subjectIds.size(); i++) {
+            if(subjectIds.get(i) == subject) {
+                subjectIds.remove(i);
             }
         }
     }

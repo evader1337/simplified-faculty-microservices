@@ -4,14 +4,14 @@ import javax.persistence.Entity;
 
 @Entity
 public class Professor extends User {
-    private Integer cabinet;
+    private Integer cabinetId;
 
-    public Integer getCabinet() {
-        return cabinet;
+    public Integer getCabinetId() {
+        return cabinetId;
     }
 
-    public void setCabinet(Integer cabinet) {
-        this.cabinet = cabinet;
+    public void setCabinetId(Integer cabinet) {
+        this.cabinetId = cabinet;
     }
 
 

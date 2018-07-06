@@ -44,7 +44,7 @@ public class PlaceBean {
     @Transactional
     public Place updatePlace(Integer id, Place place) {
         Place p = getPlace(id);
-        place.setID(p.getID());
+        place.setId(p.getId());
         em.merge(place);
         return place;
     }

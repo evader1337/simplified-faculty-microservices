@@ -1,14 +1,11 @@
-package com.dk.faculty.subjects.entities;
+package com.dk.faculty.graphqlaggregator.entities;
 
-import javax.persistence.*;
+import io.leangen.graphql.annotations.GraphQLIgnore;
+
 import java.util.List;
 
-@Entity
 public class Subject {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @ElementCollection
     private List<Integer> studentIds;
     private String title;
     private Integer placeId;
@@ -22,6 +19,7 @@ public class Subject {
         this.id = id;
     }
 
+    @GraphQLIgnore
     public List<Integer> getStudentIds() {
         return studentIds;
     }
@@ -38,6 +36,7 @@ public class Subject {
         this.title = title;
     }
 
+    @GraphQLIgnore
     public Integer getPlaceId() {
         return placeId;
     }
@@ -46,6 +45,7 @@ public class Subject {
         this.placeId = placeId;
     }
 
+    @GraphQLIgnore
     public Integer getProfessorId() {
         return professorId;
     }

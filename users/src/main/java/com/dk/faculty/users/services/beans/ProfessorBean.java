@@ -1,7 +1,6 @@
 package com.dk.faculty.users.services.beans;
 
 import com.dk.faculty.users.entities.Professor;
-import com.kumuluz.ee.configuration.utils.ConfigurationUtil;
 import com.kumuluz.ee.discovery.utils.DiscoveryUtil;
 
 import javax.annotation.PostConstruct;
@@ -12,9 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
-import java.net.URL;
 import java.util.List;
 
 @ApplicationScoped
@@ -44,7 +41,7 @@ public class ProfessorBean {
 
     @Transactional
     public Professor addProfessor(Professor professor) {
-        Integer place = professor.getCabinet();
+        Integer place = professor.getCabinetId();
         if(place != null) {
             Response r =  httpClient
                 .target(baseUrl).path("places").path("{id}").resolveTemplate("id", place)
@@ -74,7 +71,7 @@ public class ProfessorBean {
 
     @Transactional
     public Professor updateProfessor(Integer id, Professor professor) {
-        Integer place = professor.getCabinet();
+        Integer place = professor.getCabinetId();
         if(place != null) {
             Response r =  httpClient
                     .target(baseUrl).path("places").path("{id}").resolveTemplate("id", place)
@@ -84,7 +81,7 @@ public class ProfessorBean {
             }
         }
         Professor p = getProfessor(id);
-        professor.setID(p.getID());
+        professor.setId(p.getId());
         em.merge(professor);
         return professor;
     }

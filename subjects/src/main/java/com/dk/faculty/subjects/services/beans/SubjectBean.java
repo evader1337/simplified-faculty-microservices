@@ -36,8 +36,8 @@ public class SubjectBean {
     public List<Subject> getSubjects() {
         List<Subject> subjects = em.createQuery("Select s from Subject s").getResultList();
         for(Subject s: subjects) {
-            s.setStudents(httpClient
-                    .target(baseUrlUsers).path("student-subjects").path("{id}").resolveTemplate("id", s.getID())
+            s.setStudentIds(httpClient
+                    .target(baseUrlUsers).path("student-subjects").path("{id}").resolveTemplate("id", s.getId())
                     .request().get(new GenericType<List<Integer>>() {}));
         }
         return subjects;
@@ -46,25 +46,25 @@ public class SubjectBean {
     public Subject getSubject(Integer id, boolean withStudents) {
         Subject s =  em.find(Subject.class, id);
         if(s != null && withStudents) {
-            s.setStudents(httpClient
-                    .target(baseUrlUsers).path("student-subjects").path("{id}").resolveTemplate("id", s.getID())
+            s.setStudentIds(httpClient
+                    .target(baseUrlUsers).path("student-subjects").path("{id}").resolveTemplate("id", s.getId())
                     .request().get(new GenericType<List<Integer>>() {}));
         }
         return s;
     }
 
     public boolean checkForPlacesAndUsers(Subject s) {
-        if(s.getPlace() != null) {
+        if(s.getPlaceId() != null) {
             Response r =  httpClient
-                    .target(baseUrlPlaces).path("places").path("{id}").resolveTemplate("id", s.getPlace())
+                    .target(baseUrlPlaces).path("places").path("{id}").resolveTemplate("id", s.getPlaceId())
                     .request().get();
             if(r.getStatusInfo().getStatusCode() == 404) {
                 return false;
             }
         }
-        if(s.getProfessor() != null) {
+        if(s.getProfessorId() != null) {
             Response r =  httpClient
-                    .target(baseUrlUsers).path("professors").path("{id}").resolveTemplate("id", s.getProfessor())
+                    .target(baseUrlUsers).path("professors").path("{id}").resolveTemplate("id", s.getProfessorId())
                     .request().get();
             if(r.getStatusInfo().getStatusCode() == 404) {
                 return false;
@@ -98,7 +98,7 @@ public class SubjectBean {
     public Subject updateSubject(Integer id, Subject subject) {
         if(!checkForPlacesAndUsers(subject)) return null;
         Subject s = getSubject(id, false);
-        subject.setID(s.getID());
+        subject.setId(s.getId());
         em.merge(subject);
         return subject;
     }

@@ -57,7 +57,7 @@ public class StudentBean {
         List<Integer> subjectStudents = new ArrayList<Integer>();
         for(Student s: students) {
             if(s.hasSubject(subjectId)) {
-                subjectStudents.add(s.getID());
+                subjectStudents.add(s.getId());
             }
         }
         return subjectStudents;
@@ -86,7 +86,7 @@ public class StudentBean {
     @Transactional
     public Student updateStudent(Integer id, Student student) {
         Student s = getStudent(id);
-        student.setID(s.getID());
+        student.setId(s.getId());
         em.merge(student);
         return student;
     }
