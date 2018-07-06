@@ -24,9 +24,8 @@ public class StudentResource {
         List<Student> students = studentBean.getStudents();
         if(students != null) {
             return Response.status(Response.Status.OK).entity(students).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
         }
+        throw new RuntimeException("Failed getting students.");
     }
 
     @Path("{id}")
@@ -35,14 +34,17 @@ public class StudentResource {
         Student student = studentBean.getStudent(id);
         if(student != null) {
             return Response.status(Response.Status.OK).entity(student).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
         }
+        throw new NotFoundException("Student with id " + id + " not found in database.");
     }
 
     @POST
     public Response addStudent(Student student) {
-        return Response.status(Response.Status.CREATED).entity(studentBean.addStudent(student)).build();
+        Student s = studentBean.addStudent(student);
+        if(s != null) {
+            return Response.status(Response.Status.CREATED).entity(s).build();
+        }
+        throw new BadRequestException("Provided invalid fields. Please check your input.");
     }
 
     @Path("{id}")
@@ -50,9 +52,8 @@ public class StudentResource {
     public Response deleteStudent(@PathParam("id") Integer id) {
         if(studentBean.deleteStudent(id)) {
             return Response.status(Response.Status.NO_CONTENT).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
         }
+        throw new NotFoundException("Student with id " + id + " not found in database.");
     }
 
     @Path("{id}")
@@ -61,9 +62,8 @@ public class StudentResource {
         Student s = studentBean.updateStudent(id, student);
         if(s != null) {
             return Response.status(Response.Status.OK).entity(s).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
         }
+        throw new NotFoundException("Student with id " + id + " not found in database.");
     }
 
     @Path("{id}/subjects")
@@ -72,9 +72,8 @@ public class StudentResource {
         Student student = studentBean.addSubject(id, subject);
         if(student != null) {
             return Response.status(Response.Status.OK).entity(student).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
         }
+        throw new NotFoundException("Student with id " + id + " not found in database.");
     }
 
     @Path("{id}/subjects/{sid}")
@@ -83,8 +82,7 @@ public class StudentResource {
         Student student = studentBean.removeSubject(id, subject);
         if(student != null) {
             return Response.status(Response.Status.OK).entity(student).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
         }
+        throw new NotFoundException("Student or subject not found in database.");
     }
 }

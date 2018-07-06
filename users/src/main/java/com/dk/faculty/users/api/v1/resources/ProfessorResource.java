@@ -23,9 +23,8 @@ public class ProfessorResource {
         List<Professor> professors = professorBean.getProfessors();
         if(professors != null) {
             return Response.status(Response.Status.OK).entity(professors).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
         }
+        throw new RuntimeException("Error getting professors.");
     }
 
     @Path("{id}")
@@ -35,7 +34,7 @@ public class ProfessorResource {
         if(professor != null) {
             return Response.status(Response.Status.OK).entity(professor).build();
         }
-        return Response.status(Response.Status.NOT_FOUND).build();
+        throw new NotFoundException("Professor with id " + id + " not found in database.");
     }
 
     @POST
@@ -44,7 +43,7 @@ public class ProfessorResource {
         if(p != null) {
             return Response.status(Response.Status.CREATED).entity(p).build();
         }
-        return Response.status(Response.Status.NOT_FOUND).build();
+        throw new BadRequestException("Provided invalid fields. Please check your input.");
     }
 
     @Path("{id}")
@@ -53,7 +52,7 @@ public class ProfessorResource {
         if(professorBean.deleteProfessor(id)) {
             return Response.status(Response.Status.NO_CONTENT).build();
         }
-        return Response.status(Response.Status.NOT_FOUND).build();
+        throw new NotFoundException("Professor with id " + id + " not found in database.");
     }
 
     @Path("{id}")
@@ -63,6 +62,6 @@ public class ProfessorResource {
         if(p != null) {
             return Response.status(Response.Status.OK).entity(p).build();
         }
-        return Response.status(Response.Status.NOT_FOUND).build();
+        throw new NotFoundException("Professor with id " + id + " not found in database.");
     }
 }

@@ -24,6 +24,6 @@ public class StudentSubjectsResource {
         if(subjectStudents != null) {
             return Response.status(Response.Status.OK).entity(subjectStudents).build();
         }
-        return Response.status(Response.Status.BAD_REQUEST).build();
+        throw new BadRequestException("Provided invalid fields. Please check your input.");
     }
 }
