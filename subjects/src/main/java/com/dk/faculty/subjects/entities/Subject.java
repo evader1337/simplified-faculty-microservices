@@ -10,6 +10,7 @@ public class Subject {
     private Integer ID;
     @ElementCollection
     private List<Integer> students;
+    private String title;
     private Integer place;
     private Integer professor;
 
@@ -27,6 +28,14 @@ public class Subject {
 
     public void setStudents(List<Integer> students) {
         this.students = students;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Integer getPlace() {
