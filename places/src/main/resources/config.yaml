@@ -1,0 +1,18 @@
+kumuluzee:
+  name: places
+  version: 1.0.0
+  server:
+    base-url: http://192.168.99.100:8083
+    http:
+      port: 8083
+  datasources:
+    - jndi-name: jdbc/Places
+      connection-url: jdbc:postgresql://192.168.99.100:32779/places
+      username: postgres
+      password: postgres
+      max-pool-size: 20
+  discovery:
+    etcd:
+      hosts: http://192.168.99.100:2379
+    ttl: 30
+    ping-interval: 5

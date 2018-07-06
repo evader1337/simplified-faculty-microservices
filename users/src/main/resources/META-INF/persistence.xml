@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
+    <persistence-unit name="users-jpa" transaction-type="JTA">
+        <jta-data-source>jdbc/Users</jta-data-source>
+
+        <class>com.dk.faculty.users.entities.User</class>
+        <class>com.dk.faculty.users.entities.Professor</class>
+        <class>com.dk.faculty.users.entities.Student</class>
+
+        <properties>
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <property name="javax.persistence.schema-generation.create-source" value="metadata"/>
+            <property name="javax.persistence.schema-generation.drop-source" value="metadata"/>
+        </properties>
+    </persistence-unit>
+</persistence>
