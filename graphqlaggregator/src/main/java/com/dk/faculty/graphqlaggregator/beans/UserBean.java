@@ -36,7 +36,7 @@ public class UserBean {
     public List<Student> getSubjectStudents(Integer subjectId) {
         Response r = httpClient
                 .target(baseUrlUsers)
-                .path("student-subjects")
+                .path("subject-students")
                 .path("{id}")
                 .resolveTemplate("id", subjectId)
                 .request()

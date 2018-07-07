@@ -37,7 +37,7 @@ public class SubjectBean {
         List<Subject> subjects = em.createQuery("Select s from Subject s").getResultList();
         for(Subject s: subjects) {
             s.setStudentIds(httpClient
-                    .target(baseUrlUsers).path("student-subjects").path("{id}").resolveTemplate("id", s.getId())
+                    .target(baseUrlUsers).path("subject-students").path("{id}").resolveTemplate("id", s.getId())
                     .request().get(new GenericType<List<Integer>>() {}));
         }
         return subjects;
@@ -47,8 +47,12 @@ public class SubjectBean {
         Subject s =  em.find(Subject.class, id);
         if(s != null && withStudents) {
             s.setStudentIds(httpClient
-                    .target(baseUrlUsers).path("student-subjects").path("{id}").resolveTemplate("id", s.getId())
-                    .request().get(new GenericType<List<Integer>>() {}));
+                    .target(baseUrlUsers)
+                    .path("subject-students")
+                    .path("{id}")
+                    .resolveTemplate("id", s.getId())
+                    .request()
+                    .get(new GenericType<List<Integer>>() {}));
         }
         return s;
     }
