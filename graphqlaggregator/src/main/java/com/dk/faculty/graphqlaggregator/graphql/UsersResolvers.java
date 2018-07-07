@@ -8,10 +8,7 @@ import com.dk.faculty.graphqlaggregator.entities.Professor;
 import com.dk.faculty.graphqlaggregator.entities.Student;
 import com.dk.faculty.graphqlaggregator.entities.Subject;
 import com.kumuluz.ee.graphql.annotations.GraphQLClass;
-import io.leangen.graphql.annotations.GraphQLArgument;
-import io.leangen.graphql.annotations.GraphQLContext;
-import io.leangen.graphql.annotations.GraphQLNonNull;
-import io.leangen.graphql.annotations.GraphQLQuery;
+import io.leangen.graphql.annotations.*;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -62,5 +59,51 @@ public class UsersResolvers {
     @GraphQLQuery
     public Professor getProfessor(@GraphQLArgument(name = "id") @GraphQLNonNull Integer id) {
         return userBean.getProfessor(id);
+    }
+
+    @GraphQLQuery
+    public List<Student> getSubjectStudents(@GraphQLArgument(name = "subjectId") @GraphQLNonNull Integer subjectId) {
+        return userBean.getSubjectStudents(subjectId);
+    }
+
+    // mutations
+    @GraphQLMutation
+    public Student addStudent(@GraphQLArgument(name = "student") @GraphQLNonNull Student student) {
+        return userBean.addStudent(student);
+    }
+
+    @GraphQLMutation
+    public Student editStudent(@GraphQLArgument(name = "id") @GraphQLNonNull Integer id, @GraphQLArgument(name = "student") @GraphQLNonNull Student student) {
+        return userBean.editStudent(id, student);
+    }
+
+    @GraphQLMutation
+    public boolean deleteStudent(@GraphQLArgument(name = "id") @GraphQLNonNull Integer id) {
+        return userBean.deleteStudent(id);
+    }
+
+    @GraphQLMutation
+    public Student enrollStudent(@GraphQLArgument(name = "id") @GraphQLNonNull Integer id, @GraphQLArgument(name = "subjectId") @GraphQLNonNull Integer subjectId) {
+        return userBean.enrollStudent(id, subjectId);
+    }
+
+    @GraphQLMutation
+    public Student disenrollStudent(@GraphQLArgument(name = "id") @GraphQLNonNull Integer id, @GraphQLArgument(name = "subjectId") @GraphQLNonNull Integer subjectId) {
+        return userBean.disenrollStudent(id, subjectId);
+    }
+
+    @GraphQLMutation
+    public Professor addProfessor(@GraphQLArgument(name = "professor") @GraphQLNonNull Professor professor) {
+        return userBean.addProfessor(professor);
+    }
+
+    @GraphQLMutation
+    public Professor editProfessor(@GraphQLArgument(name = "id") @GraphQLNonNull Integer id, @GraphQLArgument(name = "professor") @GraphQLNonNull Professor professor) {
+        return userBean.editProfessor(id, professor);
+    }
+
+    @GraphQLMutation
+    public boolean deleteProfessor(@GraphQLArgument(name = "id") @GraphQLNonNull Integer id) {
+        return userBean.deleteProfessor(id);
     }
 }

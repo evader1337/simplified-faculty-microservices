@@ -1,6 +1,8 @@
 package com.dk.faculty.graphqlaggregator.entities;
 
 
+import io.leangen.graphql.annotations.GraphQLIgnore;
+
 public class User {
     private Integer id;
     private String firstName;
@@ -10,6 +12,7 @@ public class User {
         return id;
     }
 
+    @GraphQLIgnore
     public void setId(Integer id) {
         this.id = id;
     }

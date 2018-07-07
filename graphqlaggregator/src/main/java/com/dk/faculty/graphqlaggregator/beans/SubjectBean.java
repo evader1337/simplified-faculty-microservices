@@ -11,6 +11,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -41,21 +42,68 @@ public class SubjectBean {
         if (r.getStatusInfo().getStatusCode() == Response.Status.OK.getStatusCode()) {
             return r.readEntity(new GenericType<List<Subject>>(){});
         } else {
-            Error e = r.readEntity(new GenericType<Error>(){});
+            Error e = r.readEntity(Error.class);
             throw new GraphQLException(e.getDescription() + " " + e.getLocation());
         }
     }
 
     public Subject getSubject(Integer id) {
         Response r = httpClient
-                .target(baseUrlSubjects).path("subjects")
+                .target(baseUrlSubjects)
+                .path("subjects")
                 .path("{id}")
                 .resolveTemplate("id", id)
                 .request().get();
         if (r.getStatusInfo().getStatusCode() == Response.Status.OK.getStatusCode()) {
-            return r.readEntity(new GenericType<Subject>(){});
+            return r.readEntity(Subject.class);
         } else {
-            Error e = r.readEntity(new GenericType<Error>(){});
+            Error e = r.readEntity(Error.class);
+            throw new GraphQLException(e.getDescription() + " " + e.getLocation());
+        }
+    }
+
+    public Subject addSubject(Subject subject) {
+        Response r = httpClient
+                .target(baseUrlSubjects)
+                .path("subjects")
+                .request()
+                .post(Entity.json(subject));
+        if(r.getStatusInfo().getStatusCode() == Response.Status.CREATED.getStatusCode()) {
+            return r.readEntity(Subject.class);
+        } else {
+            Error e = r.readEntity(Error.class);
+            throw new GraphQLException(e.getDescription() + " " + e.getLocation());
+        }
+    }
+
+    public Subject editSubject(Integer id, Subject subject) {
+        Response r = httpClient
+                .target(baseUrlSubjects)
+                .path("subjects")
+                .path("{id}")
+                .resolveTemplate("id", id)
+                .request()
+                .put(Entity.json(subject));
+        if(r.getStatusInfo().getStatusCode() == Response.Status.OK.getStatusCode()) {
+            return r.readEntity(Subject.class);
+        } else {
+            Error e = r.readEntity(Error.class);
+            throw new GraphQLException(e.getDescription() + " " + e.getLocation());
+        }
+    }
+
+    public boolean deleteSubject(Integer id) {
+        Response r = httpClient
+                .target(baseUrlSubjects)
+                .path("subjects")
+                .path("{id}")
+                .resolveTemplate("id", id)
+                .request()
+                .delete();
+        if(r.getStatusInfo().getStatusCode() == Response.Status.NO_CONTENT.getStatusCode()) {
+            return true;
+        } else {
+            Error e = r.readEntity(Error.class);
             throw new GraphQLException(e.getDescription() + " " + e.getLocation());
         }
     }

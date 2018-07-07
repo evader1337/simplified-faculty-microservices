@@ -72,4 +72,36 @@ public class PlaceBean {
             throw new GraphQLException(e.getDescription() + " " + e.getLocation());
         }
     }
+
+    public Place editPlace(Integer id, Place place) {
+        Response r = httpClient
+                .target(baseUrlPlaces)
+                .path("places")
+                .path("{id}")
+                .resolveTemplate("id", id)
+                .request()
+                .put(Entity.json(place));
+        if(r.getStatusInfo().getStatusCode() == Response.Status.OK.getStatusCode()) {
+            return r.readEntity(Place.class);
+        } else {
+            Error e = r.readEntity(Error.class);
+            throw new GraphQLException(e.getDescription() + " " + e.getLocation());
+        }
+    }
+
+    public boolean deletePlace(Integer id) {
+        Response r = httpClient
+                .target(baseUrlPlaces)
+                .path("places")
+                .path("{id}")
+                .resolveTemplate("id", id)
+                .request()
+                .delete();
+        if(r.getStatusInfo().getStatusCode() == Response.Status.NO_CONTENT.getStatusCode()) {
+            return true;
+        } else {
+            Error e = r.readEntity(Error.class);
+            throw new GraphQLException(e.getDescription() + " " + e.getLocation());
+        }
+    }
 }

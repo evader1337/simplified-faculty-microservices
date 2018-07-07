@@ -12,6 +12,7 @@ public class Student extends User {
         return subjectIds;
     }
 
+    @GraphQLIgnore
     public void setSubjectIds(List<Integer> subjectIds) {
         this.subjectIds = subjectIds;
     }

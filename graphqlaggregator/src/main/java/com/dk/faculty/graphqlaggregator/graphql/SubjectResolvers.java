@@ -8,10 +8,7 @@ import com.dk.faculty.graphqlaggregator.entities.Professor;
 import com.dk.faculty.graphqlaggregator.entities.Student;
 import com.dk.faculty.graphqlaggregator.entities.Subject;
 import com.kumuluz.ee.graphql.annotations.GraphQLClass;
-import io.leangen.graphql.annotations.GraphQLArgument;
-import io.leangen.graphql.annotations.GraphQLContext;
-import io.leangen.graphql.annotations.GraphQLNonNull;
-import io.leangen.graphql.annotations.GraphQLQuery;
+import io.leangen.graphql.annotations.*;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -57,5 +54,21 @@ public class SubjectResolvers {
     @GraphQLQuery
     public Subject getSubject(@GraphQLArgument(name = "id") @GraphQLNonNull Integer id) {
         return subjectBean.getSubject(id);
+    }
+
+    // mutations
+    @GraphQLMutation
+    public Subject addSubject(@GraphQLArgument(name = "subject") @GraphQLNonNull Subject subject) {
+        return subjectBean.addSubject(subject);
+    }
+
+    @GraphQLMutation
+    public Subject editSubject(@GraphQLArgument(name = "id") @GraphQLNonNull Integer id, @GraphQLArgument(name = "subject") @GraphQLNonNull Subject subject) {
+        return subjectBean.editSubject(id, subject);
+    }
+
+    @GraphQLMutation
+    public boolean deleteSubject(@GraphQLArgument(name = "id") @GraphQLNonNull Integer id) {
+        return subjectBean.deleteSubject(id);
     }
 }

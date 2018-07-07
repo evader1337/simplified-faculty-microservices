@@ -31,7 +31,17 @@ public class PlaceResolvers {
 
     // mutations
     @GraphQLMutation
-    public Place addPlace(@GraphQLArgument(name="place") @GraphQLNonNull Place place) {
+    public Place addPlace(@GraphQLArgument(name = "place") @GraphQLNonNull Place place) {
         return placeBean.addPlace(place);
+    }
+
+    @GraphQLMutation
+    public Place editPlace(@GraphQLArgument(name = "id") @GraphQLNonNull Integer id, @GraphQLArgument(name = "place") @GraphQLNonNull Place place) {
+        return placeBean.editPlace(id, place);
+    }
+
+    @GraphQLMutation
+    public boolean deletePlace(@GraphQLArgument(name = "id") @GraphQLNonNull Integer id) {
+        return placeBean.deletePlace(id);
     }
 }

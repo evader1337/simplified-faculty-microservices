@@ -1,6 +1,7 @@
 package com.dk.faculty.graphqlaggregator.entities;
 
 import io.leangen.graphql.annotations.GraphQLIgnore;
+import io.leangen.graphql.annotations.GraphQLNonNull;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class Subject {
         return id;
     }
 
+    @GraphQLIgnore
     public void setId(Integer id) {
         this.id = id;
     }
@@ -24,6 +26,7 @@ public class Subject {
         return studentIds;
     }
 
+    @GraphQLIgnore
     public void setStudentIds(List<Integer> studentIds) {
         this.studentIds = studentIds;
     }
