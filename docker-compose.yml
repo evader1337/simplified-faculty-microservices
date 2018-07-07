@@ -1,0 +1,75 @@
+version: '3'
+services:
+  etcd:
+    image: quay.io/coreos/etcd
+    ports:
+        - 2379:2379
+        - 2380:2380
+    command: "etcd --name my-etcd-1 --data-dir /etcd-data --listen-client-urls http://0.0.0.0:2379 --advertise-client-urls http://0.0.0.0:2379 --listen-peer-urls http://0.0.0.0:2380 --initial-advertise-peer-urls http://0.0.0.0:2380 --initial-cluster my-etcd-1=http://0.0.0.0:2380 --initial-cluster-token my-etcd-token --initial-cluster-state new --auto-compaction-retention 1 -cors='*'"
+  users-db:
+    container_name: users-db
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=users
+  users:
+    container_name: users
+    restart: always
+    build: ./users/.
+    links:
+      - users-db
+      - etcd
+    environment:
+      - KUMULUZEE_DATASOURCES0_CONNECTIONURL=jdbc:postgresql://users-db:5432/users
+      - KUMULUZEE_DISCOVERY_ETCD_HOSTS=http://etcd:2379
+      - KUMULUZEE_SERVER_BASEURL=http://users:8081  
+  subjects-db:
+    container_name: subjects-db
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=subjects
+  subjects:
+    container_name: subjects
+    restart: always
+    build: ./subjects/.
+    links:
+      - subjects-db
+      - etcd
+    environment:
+      - KUMULUZEE_DATASOURCES0_CONNECTIONURL=jdbc:postgresql://subjects-db:5432/subjects
+      - KUMULUZEE_DISCOVERY_ETCD_HOSTS=http://etcd:2379
+      - KUMULUZEE_SERVER_BASEURL=http://subjects:8082  
+  places-db:
+    container_name: places-db
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=places
+  places:
+    container_name: places
+    restart: always
+    build: ./places/.
+    links:
+      - places-db
+      - etcd
+    environment:
+      - KUMULUZEE_DATASOURCES0_CONNECTIONURL=jdbc:postgresql://places-db:5432/places
+      - KUMULUZEE_DISCOVERY_ETCD_HOSTS=http://etcd:2379
+      - KUMULUZEE_SERVER_BASEURL=http://places:8083
+  graphql:
+    container_name: graphql
+    restart: always
+    build: ./graphqlaggregator/.
+    ports:
+      - "8080:8080"
+    links:
+      - places
+      - users
+      - subjects
+    environment:
+      - KUMULUZEE_DISCOVERY_ETCD_HOSTS=http://etcd:2379
+      - KUMULUZEE_SERVER_BASEURL=http://192.168.99.100:8080
