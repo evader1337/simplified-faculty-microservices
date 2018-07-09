@@ -1,0 +1,246 @@
+query places1 {
+  getPlaces {
+    id
+    location
+    placeType
+  }
+}
+
+query places2 {
+  getPlace(id: 5) {
+    id
+    location
+    placeType
+  }
+}
+
+mutation places3 {
+  addPlace(place: {placeType: CABINET, location: "R5.12"}) {
+    id
+    location
+    placeType
+  }
+}
+
+mutation places4 {
+  editPlace(id: 1, place: {placeType: CABINET, location: "R7.33"}) {
+    id
+    location
+    placeType
+  }
+}
+
+mutation places5 {
+  deletePlace(id: 4)
+}
+
+query subjects1 {
+  getSubjects {
+    id
+    place {
+      id
+      location
+      placeType
+    }
+    professor {
+      id
+      firstName
+      lastName
+      cabinet {
+        id
+        location
+        placeType
+      }
+    }
+    students {
+      id
+      firstName
+      lastName
+    }
+    title
+  }
+}
+
+query subjects2 {
+  getSubject(id: 2) {
+    id
+    title
+    place {
+      location
+    }
+    professor {
+      firstName
+    }
+    students {
+      firstName
+    }
+  }
+}
+
+mutation subjects3 {
+  editSubject(id: 1, subject: {title: "Learning Angular 6", placeId: 1, professorId: 1}) {
+    id
+    title
+    place {
+      location
+    }
+    professor {
+      firstName
+    }
+    students {
+      firstName
+    }
+  }
+}
+
+mutation subjects4 {
+  addSubject(subject: {professorId: 1, placeId: 1, title: "Learning Docker containers"}) {
+    id
+    title
+    place {
+      location
+    }
+    professor {
+      firstName
+    }
+    students {
+      firstName
+    }
+  }
+}
+
+mutation subjects5 {
+  deleteSubject(id: 1)
+}
+
+query students1 {
+  getStudents {
+    id
+    firstName
+    lastName
+    subjects {
+      id
+      title
+    }
+  }
+}
+
+query students2 {
+  getStudent(id: 1) {
+    id
+    firstName
+    lastName
+  }
+}
+
+query students3 {
+  getSubjectStudents(subjectId: 1) {
+    id
+    firstName
+    lastName
+  }
+}
+
+mutation students4 {
+  addStudent(student: {firstName: "Janez", lastName: "Novak"}) {
+    id
+    firstName
+    lastName
+    subjects {
+      id
+    }
+  }
+}
+
+mutation students5 {
+  editStudent(id: 1, student: {firstName: "Mirko", lastName: "Novak"}) {
+    id
+    firstName
+    lastName
+    subjects {
+      id
+    }
+  }
+}
+
+mutation students6 {
+  deleteStudent(id: 1)
+}
+
+mutation students7 {
+  enrollStudent(id: 1, subjectId: 1) {
+    id
+    firstName
+    lastName
+    subjects {
+      title
+    }
+  }
+}
+
+mutation students8 {
+  disenrollStudent(id: 1, subjectId: 1) {
+    id
+    firstName
+    lastName
+    subjects {
+      title
+    }
+  }
+}
+
+query professors1 {
+  getProfessors {
+    id
+    firstName
+    lastName
+    cabinet {
+      id
+      location
+      placeType
+    }
+  }
+}
+
+query professors2 {
+  getProfessor(id: 1) {
+    id
+    firstName
+    lastName
+    cabinet {
+      id
+      location
+      placeType
+    }
+  }
+}
+
+mutation professors3 {
+  addProfessor(professor: {firstName: "Chuck", lastName: "Norris", cabinetId: 1}) {
+    id
+    firstName
+    lastName
+    cabinet {
+      id
+      location
+      placeType
+    }
+  }
+}
+
+mutation professors4 {
+  editProfessor(id: 2, professor: {firstName: "Chuck", lastName: "Norris", cabinetId: 1}) {
+    id
+    firstName
+    lastName
+    cabinet {
+      id
+      location
+      placeType
+    }
+  }
+}
+
+mutation professors5 {
+  deleteProfessor(id: 2)
+}
