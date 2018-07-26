@@ -3,14 +3,12 @@ package com.dk.faculty.graphqlaggregator.beans;
 import com.dk.faculty.graphqlaggregator.entities.Error;
 import com.dk.faculty.graphqlaggregator.entities.Professor;
 import com.dk.faculty.graphqlaggregator.entities.Student;
-import com.dk.faculty.graphqlaggregator.entities.Subject;
 import com.kumuluz.ee.discovery.utils.DiscoveryUtil;
 import graphql.GraphQLException;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -19,7 +17,7 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
-@ApplicationScoped
+@RequestScoped
 public class UserBean {
     private Client httpClient;
     private String baseUrlUsers;

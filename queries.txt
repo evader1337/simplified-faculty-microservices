@@ -7,7 +7,7 @@ query places1 {
 }
 
 query places2 {
-  getPlace(id: 5) {
+  getPlace(id: 1) {
     id
     location
     placeType
@@ -31,7 +31,7 @@ mutation places4 {
 }
 
 mutation places5 {
-  deletePlace(id: 4)
+  deletePlace(id: 1)
 }
 
 query subjects1 {
@@ -44,7 +44,7 @@ query subjects1 {
     }
     professor {
       id
-      firstName
+      firstName	
       lastName
       cabinet {
         id
@@ -62,7 +62,7 @@ query subjects1 {
 }
 
 query subjects2 {
-  getSubject(id: 2) {
+  getSubject(id: 1) {
     id
     title
     place {
@@ -229,7 +229,7 @@ mutation professors3 {
 }
 
 mutation professors4 {
-  editProfessor(id: 2, professor: {firstName: "Chuck", lastName: "Norris", cabinetId: 1}) {
+  editProfessor(id: 1, professor: {firstName: "Chuck", lastName: "Norris", cabinetId: 1}) {
     id
     firstName
     lastName
@@ -242,5 +242,5 @@ mutation professors4 {
 }
 
 mutation professors5 {
-  deleteProfessor(id: 2)
+  deleteProfessor(id: 1)
 }
