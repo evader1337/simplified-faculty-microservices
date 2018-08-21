@@ -12,6 +12,7 @@
         <kumuluzee.version>2.5.3</kumuluzee.version>
         <kumuluzee-discovery.version>1.1.0</kumuluzee-discovery.version>
         <kumuluzee-graphql.version>1.0.0-SNAPSHOT</kumuluzee-graphql.version>
+        <kumuluzee-security.version>1.0.2-SNAPSHOT</kumuluzee-security.version>
     </properties>
 
     <dependencyManagement>
@@ -71,6 +72,11 @@
             <groupId>com.kumuluz.ee.graphql</groupId>
             <artifactId>kumuluzee-graphql-ui</artifactId>
             <version>${kumuluzee-graphql.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.kumuluz.ee.security</groupId>
+            <artifactId>kumuluzee-security-keycloak</artifactId>
+            <version>${kumuluzee-security.version}</version>
         </dependency>
     </dependencies>
 
